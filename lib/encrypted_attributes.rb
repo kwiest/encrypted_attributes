@@ -121,7 +121,7 @@ module EncryptedAttributes
         end
         
         # Define encryption hooks
-        define_model_callbacks("before_encrypt_#{attr_name}", "after_encrypt_#{attr_name}")
+        define_model_callbacks "encrypt_#{attr_name}", only: [:before, :after]
         send("before_encrypt_#{attr_name}", options.delete(:before)) if options.include?(:before)
         send("after_encrypt_#{attr_name}", options.delete(:after)) if options.include?(:after)
         
@@ -162,19 +162,18 @@ module EncryptedAttributes
         # Only encrypt values that actually have content and have not already
         # been encrypted
         unless value.blank? || value.encrypted?
-          run_callbacks "before_encrypt_#{attr_name}".to_sym
-          
-          # Create the cipher configured for this attribute
-          cipher = create_cipher(cipher_class, options, value)
-          
-          # Encrypt the value
-          value = cipher.encrypt(value)
-          value.cipher = cipher
-          
-          # Update the value based on the target attribute
-          send("#{to_attr_name}=", value)
-          
-          run_callbacks "after_encrypt_#{attr_name}".to_sym
+          run_callbacks "encrypt_#{attr_name}".to_sym do
+
+            # Create the cipher configured for this attribute
+            cipher = create_cipher(cipher_class, options, value)
+
+            # Encrypt the value
+            value = cipher.encrypt(value)
+            value.cipher = cipher
+
+            # Update the value based on the target attribute
+            send("#{to_attr_name}=", value)
+          end
         end
       end
       
