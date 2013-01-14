@@ -9,7 +9,7 @@ task :default => :test
 desc "Test encrypted_attributes."
 Rake::TestTask.new(:test) do |t|
   t.libs << 'lib'
-  t.test_files = Dir['test/**/*_test.rb']
+  t.test_files = Dir['test/unit/*_test.rb']
   t.verbose = true
 end
 
