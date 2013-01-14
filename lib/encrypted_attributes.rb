@@ -121,7 +121,7 @@ module EncryptedAttributes
         end
         
         # Define encryption hooks
-        define_callbacks("before_encrypt_#{attr_name}", "after_encrypt_#{attr_name}")
+        define_model_callbacks("before_encrypt_#{attr_name}", "after_encrypt_#{attr_name}")
         send("before_encrypt_#{attr_name}", options.delete(:before)) if options.include?(:before)
         send("after_encrypt_#{attr_name}", options.delete(:after)) if options.include?(:after)
         
