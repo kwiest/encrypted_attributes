@@ -2,6 +2,7 @@
 coverage
 pkg
 rdoc
-test/app_root/log
-test/app_root/script
 Gemfile.lock
+.bundle/
+vendor/bundle
+test/rails_app/log
