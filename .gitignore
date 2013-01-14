@@ -6,3 +6,4 @@ Gemfile.lock
 .bundle/
 vendor/bundle
 test/rails_app/log
+test/rails_app/db/*.sqlite3
