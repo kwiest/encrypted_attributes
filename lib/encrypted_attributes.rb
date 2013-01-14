@@ -129,7 +129,7 @@ module EncryptedAttributes
         callback = options.delete(:on) || :before_validation
         
         # Create a callback method to execute on the callback event
-        send(callback, :if => options.delete(:if), :unless => options.delete(:unless)) do |record|
+        send(callback, if: options.delete(:if), unless: options.delete(:unless)) do |record|
           record.send(:write_encrypted_attribute, attr_name, to_attr_name, cipher_class, config || options)
           true
         end
