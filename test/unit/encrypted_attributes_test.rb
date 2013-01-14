@@ -56,7 +56,7 @@ class EncryptedAttributesTest < ActiveSupport::TestCase
   
   def teardown
     User.class_eval do
-      @before_validation_callbacks = nil
+      before_validation_callbacks = nil
     end
   end
 end
@@ -132,7 +132,7 @@ class EncryptedAttributesWithMultipleAttributesTest < ActiveSupport::TestCase
   
   def teardown
     User.class_eval do
-      @before_validation_callbacks = nil
+      before_validation_callbacks = nil
     end
   end
 end
@@ -184,7 +184,7 @@ class EncryptedAttributesWithDifferentTargetTest < ActiveSupport::TestCase
   
   def teardown
     User.class_eval do
-      @before_validation_callbacks = nil
+      before_validation_callbacks = nil
     end
   end
 end
@@ -210,7 +210,7 @@ class EncryptedAttributesWithVirtualAttributeSourceTest < ActiveSupport::TestCas
   
   def teardown
     User.class_eval do
-      @before_validation_callbacks = nil
+      before_validation_callbacks = nil
       
       remove_method(:raw_password)
       remove_method(:raw_password=)
@@ -245,7 +245,7 @@ class EncryptedAttributesWithConflictingVirtualAttributeSourceTest < ActiveSuppo
   
   def teardown
     User.class_eval do
-      @before_validation_callbacks = nil
+      before_validation_callbacks = nil
       
       remove_method(:raw_password)
       remove_method(:raw_password=)
@@ -304,7 +304,7 @@ class EncryptedAttributesWithConditionalsTest < ActiveSupport::TestCase
   
   def teardown
     User.class_eval do
-      @before_validation_callbacks = nil
+      before_validation_callbacks = nil
     end
   end
 end
@@ -328,7 +328,7 @@ class EncryptedAttributesWithBeforeCallbacksTest < ActiveSupport::TestCase
   
   def teardown
     User.class_eval do
-      @before_validation_callbacks = nil
+      before_validation_callbacks = nil
       @before_encrypt_password_callbacks = nil
     end
   end
@@ -353,8 +353,8 @@ class EncryptedAttributesWithAfterCallbacksTest < ActiveSupport::TestCase
   
   def teardown
     User.class_eval do
-      @before_validation_callbacks = nil
-      @after_encrypt_password_callbacks = nil
+      before_validation_callbacks = nil
+      after_encrypt_password_callbacks = nil
     end
   end
 end
@@ -384,7 +384,7 @@ class EncryptedAttributesWithDynamicConfigurationTest < ActiveSupport::TestCase
   
   def teardown
     User.class_eval do
-      @before_validation_callbacks = nil
+      before_validation_callbacks = nil
       @before_encrypt_password_callbacks = nil
     end
   end
@@ -418,7 +418,7 @@ class ShaEncryptionTest < ActiveSupport::TestCase
   
   def teardown
     User.class_eval do
-      @before_validation_callbacks = nil
+      before_validation_callbacks = nil
     end
   end
 end
@@ -451,7 +451,7 @@ class ShaWithEmbeddedSaltEncryptionTest < ActiveSupport::TestCase
   
   def teardown
     User.class_eval do
-      @before_validation_callbacks = nil
+      before_validation_callbacks = nil
     end
   end
 end
@@ -484,7 +484,7 @@ class SymmetricEncryptionTest < ActiveSupport::TestCase
   
   def teardown
     User.class_eval do
-      @before_validation_callbacks = nil
+      before_validation_callbacks = nil
     end
   end
 end
@@ -516,7 +516,7 @@ class AsymmetricEncryptionTest < ActiveSupport::TestCase
   
   def teardown
     User.class_eval do
-      @before_validation_callbacks = nil
+      before_validation_callbacks = nil
     end
   end
 end
