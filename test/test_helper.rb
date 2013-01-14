@@ -1,7 +1,10 @@
-# Load the plugin testing framework
-$:.unshift("#{File.dirname(__FILE__)}/../../plugin_test_helper/lib")
-require 'rubygems'
-require 'plugin_test_helper'
+ENV['RAILS_ENV'] = 'test'
+
+require 'bundler/setup'
+
+$:.unshift File.dirname(__FILE__)
+require 'rails_app/config/environment'
+require 'rails/test_help'
 
 # Run the migrations
 ActiveRecord::Migrator.migrate("#{Rails.root}/db/migrate")
