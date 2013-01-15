@@ -1,8 +1,11 @@
-require File.dirname(__FILE__) + '/../test_helper'
+$:.unshift File.dirname(__FILE__) + '/..'
+require 'test_helper'
 
 class ShaCipherWithoutEmbeddingTest < Test::Unit::TestCase
   def setup
-    @cipher = EncryptedAttributes::ShaCipher.new('dc0fc7c07bba982a8d8f18fe138dbea912df5e0e', :salt => 'custom_salt')
+    @cipher = EncryptedAttributes::ShaCipher.new(
+      'dc0fc7c07bba982a8d8f18fe138dbea912df5e0e', :salt => 'custom_salt'
+    )
   end
   
   def test_should_use_configured_salt
