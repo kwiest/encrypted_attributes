@@ -121,17 +121,21 @@ module EncryptedAttributes
         end
         
         # Define encryption hooks
-        define_model_callbacks "encrypt_#{attr_name}", only: [:before, :after]
-        send("before_encrypt_#{attr_name}", options.delete(:before)) if options.include?(:before)
-        send("after_encrypt_#{attr_name}", options.delete(:after)) if options.include?(:after)
+        define_callbacks "encrypt_#{attr_name}".to_sym
+        if options.include? :before
+          before_callback = options.delete :before
+          set_callback "encrypt_#{attr_name}".to_sym, :before, before_callback
+        elsif options.include? :after
+          after_callback = options.delete :after
+          set_callback "encrypt_#{attr_name}".to_sym, :after, after_callback
+        end
         
         # Set the encrypted value on the configured callback
-        callback = options.delete(:on) || :before_validation
+        callback = options.delete(:on) || :validation
         
         # Create a callback method to execute on the callback event
-        send(callback, if: options.delete(:if), unless: options.delete(:unless)) do |record|
-          record.send(:write_encrypted_attribute, attr_name, to_attr_name, cipher_class, config || options)
-          true
+        set_callback callback, if: options.delete(:if), unless: options.delete(:unless) do |record|
+          record.send :write_encrypted_attribute, attr_name, to_attr_name, cipher_class, config || options
         end
         
         # Define virtual source attribute
@@ -158,21 +162,20 @@ module EncryptedAttributes
       # options configured for that attribute
       def write_encrypted_attribute(attr_name, to_attr_name, cipher_class, options)
         value = send(attr_name)
-        
+
         # Only encrypt values that actually have content and have not already
         # been encrypted
         unless value.blank? || value.encrypted?
           run_callbacks "encrypt_#{attr_name}".to_sym do
-
             # Create the cipher configured for this attribute
             cipher = create_cipher(cipher_class, options, value)
 
             # Encrypt the value
-            value = cipher.encrypt(value)
-            value.cipher = cipher
+            encrypted_value = cipher.encrypt(value)
+            encrypted_value.cipher = cipher
 
             # Update the value based on the target attribute
-            send("#{to_attr_name}=", value)
+            send("#{to_attr_name}=", encrypted_value)
           end
         end
       end
@@ -200,7 +203,7 @@ module EncryptedAttributes
       # Creates a new cipher with the given configuration options
       def create_cipher(klass, options, value)
         options = options.is_a?(Proc) ? options.call(self) : options.dup
-        
+
         # Only use the contextual information for this plugin's ciphers
         klass.parent == EncryptedAttributes ? klass.new(value, options) : klass.new(options)
       end
