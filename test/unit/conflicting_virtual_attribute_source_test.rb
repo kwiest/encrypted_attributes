@@ -9,7 +9,7 @@ class ConflictingVirtualAttributeSourceTest < ActiveSupport::TestCase
       end
 
       def raw_password=(value)
-        self.raw_password = value
+        self.password = value
       end
     end
 
