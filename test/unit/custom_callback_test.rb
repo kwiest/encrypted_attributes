@@ -7,13 +7,13 @@ class CustomCallbackTest < ActiveSupport::TestCase
   end
   
   def test_should_not_encrypt_on_validation
-    user = new_user(:login => 'admin', :password => 'secret')
+    user = User.new :login => 'admin', :password => 'secret'
     user.valid?
     assert_equal 'secret', user.password
   end
   
   def test_should_encrypt_on_create
-    user = new_user(:login => 'admin', :password => 'secret')
+    user = User.new :login => 'admin', :password => 'secret'
     user.save
     assert_equal '8152bc582f58c854f580cb101d3182813dec4afe', "#{user.password}"
   end

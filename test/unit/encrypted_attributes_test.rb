@@ -12,7 +12,7 @@ class EncryptedAttributesTest < ActiveSupport::TestCase
   end
   
   def test_should_encrypt_on_invalid_model
-    user = new_user(:login => nil, :password => 'secret')
+    user = User.new :login => nil, :password => 'secret'
     assert !user.valid?
     assert_equal '8152bc582f58c854f580cb101d3182813dec4afe', "#{user.password}"
   end

@@ -13,7 +13,7 @@ class MultipleAttributesTest < ActiveSupport::TestCase
   end
   
   def test_should_encrypt_on_invalid_model
-    user = new_user(:login => nil, :password => 'secret', :password_reminder => 'shhh')
+    user = User.new :login => nil, :password => 'secret', :password_reminder => 'shhh'
     assert !user.valid?
     assert_equal '8152bc582f58c854f580cb101d3182813dec4afe', "#{user.password}"
     assert_equal '162cf5debf84cbc2af13da848544c3e2c515b4d3', "#{user.password_reminder}"
