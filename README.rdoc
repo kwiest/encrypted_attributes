@@ -1,33 +1,7 @@
-= encrypted_attributes http://travis-ci.org/pluginaweek/encrypted_attributes.png
+= encrypted_attributes http://travis-ci.org/kwiest/encrypted_attributes.png
 
 +encrypted_attributes+ adds support for automatically encrypting ActiveRecord
 attributes.
-
-== Resources
-
-API
-
-* http://rdoc.info/github/pluginaweek/encrypted_attributes/master/frames
-
-Bugs
-
-* http://github.com/pluginaweek/encrypted_attributes/issues
-
-Development
-
-* http://github.com/pluginaweek/encrypted_attributes
-
-Testing
-
-* http://travis-ci.org/pluginaweek/encrypted_attributes
-
-Source
-
-* git://github.com/pluginaweek/encrypted_attributes.git
-
-Mailing List
-
-* http://groups.google.com/group/pluginaweek-talk
 
 == Description
 
@@ -103,16 +77,7 @@ For more examples of actual migrations and models that encrypt attributes,
 see the actual API and unit tests.  Also, see encrypted_strings for more
 information about the various options that can be passed in.
 
-== Testing
-
-Before you can run any tests, the following gem must be installed:
-* plugin_test_helper[http://github.com/pluginaweek/plugin_test_helper]
-
-To run against a specific version of Rails:
-
-  rake test RAILS_FRAMEWORK_ROOT=/path/to/rails
-
 == Dependencies
 
-* Rails 2.1 or later
+* Rails 3.0 or later
 * encrypted_strings[http://github.com/pluginaweek/encrypted_strings]
