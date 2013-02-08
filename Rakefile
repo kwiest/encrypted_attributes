@@ -1,7 +1,9 @@
 require 'rubygems'
+require 'bundler/setup'
 require 'rake'
 require 'rake/testtask'
 require 'rake/rdoctask'
+require 'appraisal'
 
 desc 'Default: run all tests.'
 task :default => :test
