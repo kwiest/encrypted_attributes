@@ -2,7 +2,7 @@ require 'rubygems'
 require 'bundler/setup'
 require 'rake'
 require 'rake/testtask'
-require 'rake/rdoctask'
+require 'rdoc/task'
 require 'appraisal'
 
 desc 'Default: run all tests.'
