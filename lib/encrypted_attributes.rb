@@ -119,15 +119,8 @@ module EncryptedAttributes
         cipher_class = determine_cipher_class mode
         
         # Define encryption hooks
-        define_callbacks "encrypt_#{attr_name}".to_sym
-        if options.include? :before
-          before_callback = options.delete :before
-          set_callback "encrypt_#{attr_name}".to_sym, :before, before_callback
-        elsif options.include? :after
-          after_callback = options.delete :after
-          set_callback "encrypt_#{attr_name}".to_sym, :after, after_callback
-        end
-        
+        define_encryption_hooks attr_name, options
+
         # Set the encrypted value on the configured callback
         callback = options.delete(:on)
         
@@ -153,6 +146,7 @@ module EncryptedAttributes
       end
     end
 
+
     private
 
     def extract_options(attrs)
@@ -166,6 +160,18 @@ module EncryptedAttributes
         cipher_class = EncryptedAttributes.const_get(class_name)
       else
         cipher_class = EncryptedStrings.const_get(class_name)
+      end
+    end
+
+    def define_encryption_hooks(attr_name, options)
+      define_callbacks "encrypt_#{attr_name}".to_sym
+
+      if options.include? :before
+        before_callback = options.delete :before
+        set_callback "encrypt_#{attr_name}".to_sym, :before, before_callback
+      elsif options.include? :after
+        after_callback = options.delete :after
+        set_callback "encrypt_#{attr_name}".to_sym, :after, after_callback
       end
     end
   end
