@@ -109,22 +109,23 @@ module EncryptedAttributes
     # encrypted.  This helps improve the security of the user's password.
     def encrypts(*attr_names, &config)
       options = extract_options attr_names
+
+      unless included_modules.include?(EncryptedAttributes::InstanceMethods)
+        include EncryptedAttributes::InstanceMethods
+      end
       
       attr_names.each do |attr_name|
         attr_name = attr_name.to_s
         to_attr_name = (options.delete(:to) || attr_name).to_s
         
         # Figure out what cipher is being configured for the attribute
-        mode = options.delete(:mode)
-        cipher_class = determine_cipher_class mode
+        cipher_class = determine_cipher_class(options.delete(:mode))
         
         # Define encryption hooks
         define_encryption_hooks attr_name, options
 
         # Set the encrypted value on the configured callback
         callback = options.delete(:on)
-        
-        # Create a callback method to execute on the callback event
         set_callback callback, if: options.delete(:if), unless: options.delete(:unless) do |record|
           record.send :write_encrypted_attribute, attr_name, to_attr_name, cipher_class, config || options
         end
@@ -138,10 +139,6 @@ module EncryptedAttributes
         # Define the reader when reading the encrypted attribute from the database
         define_method(to_attr_name) do
           read_encrypted_attribute(to_attr_name, cipher_class, config || options)
-        end
-        
-        unless included_modules.include?(EncryptedAttributes::InstanceMethods)
-          include EncryptedAttributes::InstanceMethods
         end
       end
     end
@@ -157,22 +154,17 @@ module EncryptedAttributes
     def determine_cipher_class(mode)
       class_name = "#{mode.to_s.classify}Cipher"
       if EncryptedAttributes.const_defined?(class_name)
-        cipher_class = EncryptedAttributes.const_get(class_name)
+        EncryptedAttributes.const_get class_name
       else
-        cipher_class = EncryptedStrings.const_get(class_name)
+        EncryptedStrings.const_get class_name
       end
     end
 
     def define_encryption_hooks(attr_name, options)
-      define_callbacks "encrypt_#{attr_name}".to_sym
-
-      if options.include? :before
-        before_callback = options.delete :before
-        set_callback "encrypt_#{attr_name}".to_sym, :before, before_callback
-      elsif options.include? :after
-        after_callback = options.delete :after
-        set_callback "encrypt_#{attr_name}".to_sym, :after, after_callback
-      end
+      callback_name = "encrypt_#{attr_name}".to_sym
+      define_callbacks callback_name
+      set_callback callback_name, :before, options.delete(:before) if options.include?(:before)
+      set_callback callback_name, :after, options.delete(:after) if options.include?(:after)
     end
   end
   
