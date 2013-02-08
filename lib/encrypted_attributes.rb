@@ -113,7 +113,7 @@ module EncryptedAttributes
         to_attr_name = (options.delete(:to) || attr_name).to_s
         
         # Figure out what cipher is being configured for the attribute
-        mode = options.delete(:mode) || :sha
+        mode = options.delete(:mode)
         class_name = "#{mode.to_s.classify}Cipher"
         if EncryptedAttributes.const_defined?(class_name)
           cipher_class = EncryptedAttributes.const_get(class_name)
@@ -132,7 +132,7 @@ module EncryptedAttributes
         end
         
         # Set the encrypted value on the configured callback
-        callback = options.delete(:on) || :validation
+        callback = options.delete(:on)
         
         # Create a callback method to execute on the callback event
         set_callback callback, if: options.delete(:if), unless: options.delete(:unless) do |record|
