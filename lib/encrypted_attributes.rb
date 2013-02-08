@@ -3,6 +3,8 @@ require 'encrypted_attributes/sha_cipher'
 
 module EncryptedAttributes
   module MacroMethods
+    DEFAULT_OPTIONS = { mode: :sha, on: :validation }
+
     # Encrypts the given attribute.
     # 
     # Configuration options:
@@ -104,10 +106,9 @@ module EncryptedAttributes
     # dynamically based on the user's login and the time at which it was
     # encrypted.  This helps improve the security of the user's password.
     def encrypts(*attr_names, &config)
-      base_options = attr_names.last.is_a?(Hash) ? attr_names.pop : {}
+      options = extract_options attr_names
       
       attr_names.each do |attr_name|
-        options = base_options.dup
         attr_name = attr_name.to_s
         to_attr_name = (options.delete(:to) || attr_name).to_s
         
@@ -152,6 +153,16 @@ module EncryptedAttributes
         unless included_modules.include?(EncryptedAttributes::InstanceMethods)
           include EncryptedAttributes::InstanceMethods
         end
+      end
+    end
+
+    private
+
+    def extract_options(attrs)
+      if attrs.last.is_a? Hash
+        attrs.pop.merge DEFAULT_OPTIONS
+      else
+        DEFAULT_OPTIONS
       end
     end
   end
