@@ -2,9 +2,11 @@ require 'encrypted_strings'
 require 'encrypted_attributes/sha_cipher'
 
 module EncryptedAttributes
-  module MacroMethods
-    DEFAULT_OPTIONS = { mode: :sha, on: :validation }
+  def self.options
+    @options ||= { mode: :sha, on: :validation }
+  end
 
+  module MacroMethods
     # Encrypts the given attribute.
     # 
     # Configuration options:
@@ -159,11 +161,8 @@ module EncryptedAttributes
     private
 
     def extract_options(attrs)
-      if attrs.last.is_a? Hash
-        attrs.pop.merge DEFAULT_OPTIONS
-      else
-        DEFAULT_OPTIONS
-      end
+      options = attrs.last.is_a?(Hash) ? attrs.pop : {}
+      options.merge EncryptedAttributes.options
     end
   end
   
