@@ -3,7 +3,7 @@ require 'encrypted_attributes/sha_cipher'
 
 module EncryptedAttributes
   def self.options
-    @options ||= { mode: :sha, on: :validation }
+    @options ||= { mode: :sha, on: :validate }
   end
 
   module MacroMethods
