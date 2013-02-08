@@ -7,3 +7,4 @@ Gemfile.lock
 vendor/bundle
 test/rails_app/log
 test/rails_app/db/*.sqlite3
+test/rails_app/:memory
