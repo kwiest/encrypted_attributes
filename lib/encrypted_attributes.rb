@@ -116,12 +116,7 @@ module EncryptedAttributes
         
         # Figure out what cipher is being configured for the attribute
         mode = options.delete(:mode)
-        class_name = "#{mode.to_s.classify}Cipher"
-        if EncryptedAttributes.const_defined?(class_name)
-          cipher_class = EncryptedAttributes.const_get(class_name)
-        else
-          cipher_class = EncryptedStrings.const_get(class_name)
-        end
+        cipher_class = determine_cipher_class mode
         
         # Define encryption hooks
         define_callbacks "encrypt_#{attr_name}".to_sym
@@ -163,6 +158,15 @@ module EncryptedAttributes
     def extract_options(attrs)
       options = attrs.last.is_a?(Hash) ? attrs.pop : {}
       options.merge EncryptedAttributes.options
+    end
+
+    def determine_cipher_class(mode)
+      class_name = "#{mode.to_s.classify}Cipher"
+      if EncryptedAttributes.const_defined?(class_name)
+        cipher_class = EncryptedAttributes.const_get(class_name)
+      else
+        cipher_class = EncryptedStrings.const_get(class_name)
+      end
     end
   end
   
