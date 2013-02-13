@@ -109,7 +109,7 @@ module EncryptedAttributes
     # encrypted.  This helps improve the security of the user's password.
     def encrypts(*attr_names, &config)
       options = attr_names.extract_options!
-      options = options.merge EncryptedAttributes.options
+      options = EncryptedAttributes.options.merge(options)
 
       unless included_modules.include?(EncryptedAttributes::InstanceMethods)
         include EncryptedAttributes::InstanceMethods
