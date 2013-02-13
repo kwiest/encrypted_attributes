@@ -30,6 +30,14 @@ class BeforeCallbacksTest < ActiveSupport::TestCase
   end
 
   def teardown
-    User.reset_callbacks :encrypt_password
+    @user.instance_eval do
+      remove_instance_variable :@password_var
+      remove_instance_variable :@ran_callback
+    end
+
+    User.class_eval do
+      reset_callbacks :encrypt_password
+      undef_method :password_var, :ran_callback
+    end
   end
 end
