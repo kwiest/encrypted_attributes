@@ -108,7 +108,8 @@ module EncryptedAttributes
     # dynamically based on the user's login and the time at which it was
     # encrypted.  This helps improve the security of the user's password.
     def encrypts(*attr_names, &config)
-      options = extract_options attr_names
+      options = attr_names.extract_options!
+      options = options.merge EncryptedAttributes.options
 
       unless included_modules.include?(EncryptedAttributes::InstanceMethods)
         include EncryptedAttributes::InstanceMethods
@@ -146,11 +147,6 @@ module EncryptedAttributes
 
     private
 
-    def extract_options(attrs)
-      options = attrs.last.is_a?(Hash) ? attrs.pop : {}
-      options.merge EncryptedAttributes.options
-    end
-
     def determine_cipher_class(mode)
       class_name = "#{mode.to_s.classify}Cipher"
       if EncryptedAttributes.const_defined?(class_name)
@@ -162,7 +158,7 @@ module EncryptedAttributes
 
     def define_encryption_hooks(attr_name, options)
       callback_name = "encrypt_#{attr_name}".to_sym
-      define_callbacks callback_name
+      define_model_callbacks callback_name
       set_callback callback_name, :before, options.delete(:before) if options.include?(:before)
       set_callback callback_name, :after, options.delete(:after) if options.include?(:after)
     end
