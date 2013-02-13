@@ -1,28 +1,30 @@
 $:.unshift File.dirname(__FILE__) + '/..'
 require 'test_helper'
 
-class EncryptedAttributesWithAfterCallbacksTest < ActiveSupport::TestCase
+class EncryptedAttributesWithAfterCallbacksTest < MiniTest::Unit::TestCase
   def setup
     User.class_eval do
       attr_reader :password_var, :ran_callback
 
-      encrypts :password, :after => lambda {
-        @password_var = password
-        @ran_callback = true
-      }
-
       def initialize(*args)
-        @password_var = nil
+        @password_var = ''
         @ran_callback = false
         super
       end
     end
+
+    callback = lambda { |record|
+      @password_var = record.password
+      @ran_callback = true
+    }
+
+    User.encrypts :password, :after => callback
     
     @user = User.create! :login => 'admin', :password => 'secret'
   end
   
   def test_should_run_callback
-    assert @user.ran_callback
+    assert @user.ran_callback, 'Callback should have been called'
   end
   
   def test_should_have_encrypted_already
@@ -30,6 +32,14 @@ class EncryptedAttributesWithAfterCallbacksTest < ActiveSupport::TestCase
   end
 
   def teardown
-    User.reset_callbacks :encrypt_password
+    @user.instance_eval do
+      remove_instance_variable :@password_var
+      remove_instance_variable :@ran_callback
+    end
+
+    User.class_eval do
+      reset_callbacks :encrypt_password
+      undef_method :password_var, :ran_callback
+    end
   end
 end
