@@ -6,19 +6,12 @@ class EncryptedAttributesWithAfterCallbacksTest < MiniTest::Unit::TestCase
     User.class_eval do
       attr_reader :password_var, :ran_callback
 
-      def initialize(*args)
-        @password_var = ''
-        @ran_callback = false
-        super
-      end
+      encrypts :password, :after => lambda {
+        @password_var = password
+        @ran_callback = true
+      }
     end
 
-    callback = lambda { |record|
-      @password_var = record.password
-      @ran_callback = true
-    }
-
-    User.encrypts :password, :after => callback
     
     @user = User.create! :login => 'admin', :password => 'secret'
   end
