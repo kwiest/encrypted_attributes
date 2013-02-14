@@ -1,7 +1,7 @@
 $:.unshift File.dirname(__FILE__) + '/..'
 require 'test_helper'
 
-class EncryptedAttributesWithAfterCallbacksTest < MiniTest::Unit::TestCase
+class EncryptedAttributesWithAfterCallbacksTest < ActiveSupport::TestCase
   def setup
     User.class_eval do
       attr_reader :password_var, :ran_callback

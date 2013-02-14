@@ -10,7 +10,7 @@ require 'pry'
 # Run the migrations
 ActiveRecord::Migrator.migrate("#{Rails.root}/db/migrate")
 
-class MiniTest::Unit::TestCase
+class ActiveSupport::TestCase
   def teardown
     User.reset_callbacks :validate
     User.reset_callbacks :save
