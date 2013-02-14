@@ -2,10 +2,6 @@ require 'encrypted_strings'
 require 'encrypted_attributes/sha_cipher'
 
 module EncryptedAttributes
-  def self.options
-    @options ||= { mode: :sha, on: :validate }
-  end
-
   module MacroMethods
     # Encrypts the given attribute.
     # 
@@ -109,7 +105,6 @@ module EncryptedAttributes
     # encrypted.  This helps improve the security of the user's password.
     def encrypts(*attr_names, &config)
       options = attr_names.extract_options!
-      options = EncryptedAttributes.options.merge(options)
 
       unless included_modules.include?(EncryptedAttributes::InstanceMethods)
         include EncryptedAttributes::InstanceMethods
@@ -120,13 +115,14 @@ module EncryptedAttributes
         to_attr_name = (options.delete(:to) || attr_name).to_s
         
         # Figure out what cipher is being configured for the attribute
-        cipher_class = determine_cipher_class(options.delete(:mode))
+        mode = options.delete(:mode) || :sha
+        cipher_class = determine_cipher_class(mode)
         
         # Define encryption hooks
         define_encryption_hooks attr_name, options
 
         # Set the encrypted value on the configured callback
-        callback = options.delete(:on)
+        callback = options.delete(:on) || :validate
         set_callback callback, :if => options.delete(:if), :unless => options.delete(:unless) do |record|
           record.send :write_encrypted_attribute, attr_name, to_attr_name, cipher_class, config || options
         end
