@@ -14,5 +14,6 @@ class ActiveSupport::TestCase
   def teardown
     User.reset_callbacks :validate
     User.reset_callbacks :save
+    User.validates :login, :presence => true
   end
 end
