@@ -1,3 +1,3 @@
 class User < ActiveRecord::Base
-  validates :login, presence: true
+  validates :login, :presence => true
 end
