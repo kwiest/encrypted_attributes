@@ -34,5 +34,6 @@ class EncryptedAttributesWithAfterCallbacksTest < ActiveSupport::TestCase
       reset_callbacks :encrypt_password
       undef_method :password_var, :ran_callback
     end
+    super
   end
 end
