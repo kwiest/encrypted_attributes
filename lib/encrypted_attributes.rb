@@ -127,7 +127,7 @@ module EncryptedAttributes
 
         # Set the encrypted value on the configured callback
         callback = options.delete(:on)
-        set_callback callback, if: options.delete(:if), unless: options.delete(:unless) do |record|
+        set_callback callback, :if => options.delete(:if), :unless => options.delete(:unless) do |record|
           record.send :write_encrypted_attribute, attr_name, to_attr_name, cipher_class, config || options
         end
         
