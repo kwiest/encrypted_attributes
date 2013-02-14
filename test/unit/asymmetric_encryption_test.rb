@@ -26,8 +26,4 @@ class AsymmetricEncryptionTest < ActiveSupport::TestCase
   def test_should_be_able_to_check_password
     assert_equal 'secret', @user.password
   end
-
-  def teardown
-    User.reset_callbacks :validate
-  end
 end

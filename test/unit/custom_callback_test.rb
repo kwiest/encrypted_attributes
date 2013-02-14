@@ -17,8 +17,4 @@ class CustomCallbackTest < ActiveSupport::TestCase
     user.save
     assert_equal '8152bc582f58c854f580cb101d3182813dec4afe', "#{user.password}"
   end
-
-  def teardown
-    User.reset_callbacks :save
-  end
 end
