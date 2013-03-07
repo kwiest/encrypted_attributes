@@ -1,6 +1,7 @@
 # encrypted_attributes
 
 [![Build Status](https://travis-ci.org/kwiest/encrypted_attributes.png?branch=master)](https://travis-ci.org/kwiest/encrypted_attributes)
+[![Code Climate](https://codeclimate.com/github/kwiest/encrypted_attributes.png)](https://codeclimate.com/github/kwiest/encrypted_attributes)
 
 `encrypted_attributes` adds support for automatically encrypting ActiveRecord
 attributes.
@@ -15,9 +16,19 @@ attributes easier by automating the process.
 The options that +encrypts+ takes includes all of the encryption options for
 the specific type of cipher being used from the `encrypted_strings` library.
 Therefore, if setting the key for asymmetric encryption, this would be passed
-into the +encrypts+ method.  Examples of this are show in the Usage section.
+into the +encrypts+ method.  Examples of this are shown in the Usage section.
 
 ## Usage
+
+### Installation
+
+Add it to your Gemfile
+
+```ruby
+  gem 'encrypted_attributes', :git => 'git://github.com/kwiest/encrypted_attributes'
+```
+
+For Rails < 3.0 you should use the [Rails 2.3 branch](https://github.com/kwiest/encrypted_attributes/tree/rails-2-3)
 
 ### Encryption Modes
 
@@ -38,7 +49,7 @@ The encryption configuration can be dynamically set like so:
 ```ruby
 class User < ActiveRecord::Base
   encrypts :password, :mode => :sha do |user|
-    {:salt => "#{user.login}-#{Time.now}", :embed_salt => true}
+    { :salt => "#{user.login}-#{Time.now}", :embed_salt => true }
   end
 end
 ```
@@ -52,11 +63,11 @@ To store the dynamic salt in a separate column:
 ```ruby
 class User < ActiveRecord::Base
   encrypts :password, :mode => :sha, :before => :create_salt do |user|
-    {:salt => user.salt}
+    { :salt => user.salt }
   end
   
   def create_salt
-    self.salt = "#{login}-#{Time.now}"
+    salt = "#{login}-#{Time.now}"
   end
 end
 ```
@@ -79,7 +90,7 @@ parameters that determine whether the encryption should occur.  For example,
 
 ```ruby
 class User < ActiveRecord::Base
-  encrypts :password, :if => lambda {Rails.env != 'development'}
+  encrypts :password, :if => lambda { Rails.env != 'development' }
 end
 ```
 
