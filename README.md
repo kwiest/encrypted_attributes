@@ -1,6 +1,6 @@
 # encrypted_attributes
 
-[![Build Status](https://travis-ci.org/kwiest/encrypted_attributes.png)](https://travis-ci.org/kwiest/encrypted_attributes)
+[![Build Status](https://travis-ci.org/kwiest/encrypted_attributes.png?branch=master)](https://travis-ci.org/kwiest/encrypted_attributes)
 
 `encrypted_attributes` adds support for automatically encrypting ActiveRecord
 attributes.
