@@ -4,9 +4,8 @@ require 'encrypted_attributes/version'
 Gem::Specification.new do |s|
   s.name              = 'encrypted_attributes'
   s.version           = EncryptedAttributes::VERSION
-  s.authors           = ['Aaron Pfeifer']
-  s.email             = 'aaron@pluginaweek.org'
-  s.homepage          = 'http://www.pluginaweek.org'
+  s.authors           = ['Kyle Wiest', 'Aaron Pfeifer']
+  s.email             = 'kyle.wiest@gmail.com'
   s.description       = 'Adds support for automatically encrypting ActiveRecord attributes'
   s.summary           = 'Encrypts ActiveRecord attributes'
   s.require_paths     = ['lib']
