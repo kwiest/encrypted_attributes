@@ -26,4 +26,13 @@ class ConflictingVirtualAttributeSourceTest < ActiveSupport::TestCase
     @user.raw_password = 'raw_password'
     assert_equal 'raw_password', @user.password
   end
+
+  def teardown
+    User.class_eval do
+      reset_callbacks :encrypt_raw_password
+      remove_method :raw_password
+      remove_method :raw_password=
+    end
+    super
+  end
 end
